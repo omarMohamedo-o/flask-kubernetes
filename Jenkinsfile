@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'jenkins/jenkins-flask-app'
-        IMAGE_TAG = "${IMAGE_NAME}:${env.GIT_COMMIT}"
         // KUBECONFIG = credentials('kubeconfig-credentials-id')
         // AWS_ACCESS_KEY_ID = credentials('aws-access-key')
         // AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
@@ -15,6 +13,8 @@ pipeline {
         ACR_LOGIN_SERVER = "${ACR_NAME}.azurecr.io"
         AKS_RESOURCE_GROUP = 'your-aks-resource-group'
         AKS_CLUSTER_NAME = 'your-aks-cluster-name'
+        IMAGE_NAME = "${ACR_LOGIN_SERVER}/jenkins/jenkins-flask-app"
+        IMAGE_TAG = "${IMAGE_NAME}:${env.GIT_COMMIT}"
         
     }
 
@@ -83,7 +83,7 @@ pipeline {
 
                     // Apply Kubernetes manifests (assuming you have a deployment.yaml)
                     sh '''
-                    sed -i 's|{{IMAGE}}|${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
+                    sed -i 's|{{IMAGE}}|${IMAGE_TAG}|g' deployment.yaml
                     kubectl apply -f deployment.yaml
                     '''
                 }

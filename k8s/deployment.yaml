@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: jenkins/jenkins-flask-app:v3
+        image: {{IMAGE}}
         resources:
           limits:
             memory: "128Mi"
