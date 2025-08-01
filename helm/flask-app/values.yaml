@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: githubactionsiti2025.azurecr.io/omar-mohamed-abdelsalm-flask-kubernetes
+  repository: nginx
   tag: "latest"
   pullPolicy: IfNotPresent
 
