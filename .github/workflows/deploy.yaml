@@ -1,4 +1,4 @@
-name: Deploy with Helm
+name: Deploy to Kubernetes
 
 on: [push]
 
@@ -6,22 +6,35 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Login to ACR
+      # 1️⃣ Login to Docker Hub
+      - name: Login to Docker Hub
         run: |
-          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login githubactionsiti2025.azurecr.io -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - name: Build and Push Image
+      # 2️⃣ Build & Push Image
+      - name: Build and Push
         run: |
-          docker build -t githubactionsiti2025.azurecr.io/flask-app:latest .
-          docker push githubactionsiti2025.azurecr.io/flask-app:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-app:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/flask-app:latest
 
+      # 3️⃣ Set up Minikube (local Kubernetes)
+      - name: Setup Minikube
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -qy conntrack
+          curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+          sudo install minikube-linux-amd64 /usr/local/bin/minikube
+          minikube start --driver=docker
+
+      # 4️⃣ Install Helm
       - name: Install Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
 
-      - name: Deploy to AKS
+      # 5️⃣ Deploy with Helm
+      - name: Deploy
         run: |
-          helm upgrade --install flask-app-release ./helm/flask-app \
-            --set image.repository=githubactionsiti2025.azurecr.io/flask-app \
+          helm upgrade --install flask-app ./helm/flask-app \
+            --set image.repository=${{ secrets.DOCKER_USERNAME }}/flask-app \
             --set image.tag=latest

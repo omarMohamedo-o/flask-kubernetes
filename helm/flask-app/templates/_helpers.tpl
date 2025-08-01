@@ -1,4 +1,4 @@
 {{- define "labels.standard" -}}
-place: iti
-name: yourname
+app: flask-app
+env: production
 {{- end -}}

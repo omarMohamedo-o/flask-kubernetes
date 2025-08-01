@@ -1,8 +1,12 @@
 replicaCount: 2
 image:
-  repository: githubactionsiti2025.azurecr.io/flask-app
+  repository: docker.io/0marmohamed/flask-kubernetes
+  tag: latest
   pullPolicy: IfNotPresent
-  tag: "latest"
+
+service:
+  type: LoadBalancer
+  port: 5000
 
 resources:
   limits:
@@ -11,7 +15,3 @@ resources:
   requests:
     cpu: 250m
     memory: 256Mi
-
-service:
-  type: LoadBalancer
-  port: 5000
