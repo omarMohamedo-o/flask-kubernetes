@@ -11,4 +11,4 @@ spec:
       targetPort: 5000
       protocol: TCP
   selector:
-    app: {{ .Release.Name }}
+    {{- include "labels.standard" . | nindent 4 }}
