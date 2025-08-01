@@ -1,0 +1,19 @@
+replicaCount: 2
+
+image:
+  repository: githubactionsiti2025.azurecr.io/omar-mohamed-abdelsalm-flask-kubernetes
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 5000
