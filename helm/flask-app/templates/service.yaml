@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-service
   labels:
-    {{- include "flask-kubernetes.labels" . | nindent 4 }}
+    {{- include "labels.standard" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
-  - port: {{ .Values.service.port }}
-    targetPort: {{ .Values.service.targetPort }}
-    protocol: TCP
+    - port: {{ .Values.service.port }}
+      targetPort: 5000
+      protocol: TCP
   selector:
-    {{- include "flask-kubernetes.labels" . | nindent 4 }}
+    app: {{ .Release.Name }}

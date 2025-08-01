@@ -1,9 +1,8 @@
-{{/*
-Common labels
-*/}}
-{{- define "flask-kubernetes.labels" -}}
+{{- define "labels.standard" -}}
 place: iti
-name: yourname
-app.kubernetes.io/name: {{ .Release.Name }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+name: ahmed3ta
+app: {{ .Release.Name }}
+chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
 {{- end -}}

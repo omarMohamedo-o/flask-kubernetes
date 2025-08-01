@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-deployment
   labels:
-    {{ include "flask-app.labels" . | nindent 4 }}
+    {{- include "labels.standard" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -12,11 +12,10 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
-        {{ include "flask-app.labels" . | nindent 8 }}
+        {{- include "labels.standard" . | nindent 8 }}
     spec:
       containers:
-        - name: flask-app
+        - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

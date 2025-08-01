@@ -1,19 +1,15 @@
 replicaCount: 2
-
 image:
-  repository: nginx
-  tag: "latest"
+  repository: githubactionsiti2025.azurecr.io/flask-kubernetes
+  tag: latest
   pullPolicy: IfNotPresent
-
-resources:
-  limits:
-    cpu: "500m"
-    memory: "512Mi"
-  requests:
-    cpu: "200m"
-    memory: "256Mi"
-
 service:
   type: LoadBalancer
-  port: 80
-  targetPort: 5000
+  port: 5000
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
